@@ -18,7 +18,7 @@ export default function UploadPage() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
         method: "POST",
         body: formData,
       });

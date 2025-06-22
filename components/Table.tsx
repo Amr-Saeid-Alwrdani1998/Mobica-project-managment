@@ -264,7 +264,7 @@ export default function Relldata() {
 useEffect(() => {
   async function fetchItems() {
     try {
-      const res = await fetch('/api/items')
+const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/items`)
       if (!res.ok) throw new Error('Failed to fetch from API')
       const json = await res.json()
       setData(json)
