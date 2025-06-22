@@ -264,19 +264,18 @@ export default function Relldata() {
 useEffect(() => {
   async function fetchItems() {
     try {
-const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/items`)
+      const res = await fetch('/api/items')
       if (!res.ok) throw new Error('Failed to fetch from API')
       const json = await res.json()
       setData(json)
     } catch (err) {
-      console.error('Error fetching from API. Using local fallback.')
-      const res = await fetch('/test/items.json')
-      const json = await res.json()
-      setData(json)
+      console.error('Error fetching from API.')
+      // ممكن تعرض رسالة للمستخدم أو تسيب البيانات فاضية
     }
   }
   fetchItems()
 }, [])
+
 
 
 
