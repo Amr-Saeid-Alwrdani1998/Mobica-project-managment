@@ -155,6 +155,10 @@ const columns: ColumnDef<Item>[] = [
     enableHiding: false,
   },
   {
+    header: "م",
+    accessorKey: 'م'
+  },
+  {
     header: "اسم العـميل",
     accessorKey: "اسم العـميل",
     cell: ({ row }) => (
@@ -169,11 +173,6 @@ const columns: ColumnDef<Item>[] = [
     accessorKey: "العـــــــــــــــنوان",
   },
   {
-    header: "مجموعة التركيب",
-    accessorKey: "مجموعة التركيب",
-    size: 220,
-  },
-  {
     header: "رقـم العقـد",
     accessorKey: "رقـم العقـد",
     cell: ({ row }) => (
@@ -184,6 +183,83 @@ const columns: ColumnDef<Item>[] = [
     ),
     size: 180,
   },
+  {
+    header: "البند",
+    accessorKey: "البند",
+  },
+    {
+    header: "المــنتجـات",
+    accessorKey: "المــنتجـات",
+  },
+    {
+    header: "الكمية الفعلية بالبند",
+    accessorKey: "الكمية الفعلية بالبند",
+  },
+    {
+    header: "الكمية الموردة",
+    accessorKey: "الكمية الموردة",
+  },
+    {
+    header: "معادلة التركيب",
+    accessorKey: "معادلة التركيب",
+  },
+    {
+    header: "الكمية المتبقية بالبند",
+    accessorKey: "الكمية المتبقية بالبند",
+  },
+    {
+    header: "نوع المخزن",
+    accessorKey: "نوع المخزن",
+  },
+  
+    {
+    header: "القطاع البيعي",
+    accessorKey: "القطاع البيعي",
+  },
+  
+    {
+    header: "سعر المنتج",
+    accessorKey: "سعر المنتج",
+  },
+  
+    {
+    header: "اجمالي قيمة المنتجات",
+    accessorKey: "اجمالي قيمة المنتجات",
+  },
+  
+  {
+  header: "تاريخ امر التوريد",
+  accessorKey: "تاريخ امر التوريد",
+  cell: ({ row }) => parseExcelDate(row.getValue("تاريخ امر التوريد")),
+  size: 160,
+},
+  {
+  header: "تاريخ التوريد الفعلي",
+  accessorKey: "تاريخ التوريد الفعلي",
+  cell: ({ row }) => parseExcelDate(row.getValue("تاريخ التوريد الفعلي")),
+  size: 160,
+},
+  {
+  header: "تاريخ بدء التركيب",
+  accessorKey: "تاريخ بدء التركيب",
+  cell: ({ row }) => parseExcelDate(row.getValue("تاريخ بدء التركيب")),
+  size: 160,
+},
+{
+  header: "تاريخ انتهاء التركيب",
+  accessorKey: "تاريخ انتهاء التركيب",
+  cell: ({ row }) => parseExcelDate(row.getValue("تاريخ انتهاء التركيب")),
+  size: 160,
+},
+{
+  header: "مهندس البيع",
+  accessorKey: "مهندس البيع",
+},
+{
+  header: "مجموعة التركيب",
+  accessorKey: "مجموعة التركيب",
+  size: 220,
+},
   {
     header: "موقف التركيب",
     accessorKey: "موقف التركيب",
@@ -201,45 +277,13 @@ const columns: ColumnDef<Item>[] = [
     filterFn: statusFilterFn,
   },
   {
-    header: "المــنتجـات",
-    accessorKey: "المــنتجـات",
-  },
-  {
-  header: "تاريخ بدء التركيب",
-  accessorKey: "تاريخ بدء التركيب",
-  cell: ({ row }) => parseExcelDate(row.getValue("تاريخ بدء التركيب")),
-  size: 160,
+  header: "سبب التأخير",
+  accessorKey: "سبب التأخير",
 },
-{
-  header: "تاريخ انتهاء التركيب",
-  accessorKey: "تاريخ انتهاء التركيب",
-  cell: ({ row }) => parseExcelDate(row.getValue("تاريخ انتهاء التركيب")),
-  size: 160,
-},
-// {
-//   header: "اجمالي قيمة المنتجات",
-//   accessorKey: "اجمالي قيمة المنتجات",
-// },
   {
-    header: "اجمالي قيمة المنتجات",
-    accessorKey: "اجمالي قيمة المنتجات",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("اجمالي قيمة المنتجات"))
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "EGP",
-      }).format(amount)
-      return formatted
-    },
-    size: 120,
-  },
-  // {
-  //   id: "actions",
-  //   header: () => <span className="sr-only">Actions</span>,
-  //   cell: ({ row }) => <RowActions row={row} />,
-  //   size: 60,
-  //   enableHiding: false,
-  // },
+  header: "ملاحظات",
+  accessorKey: "ملاحظات",
+},
 ]
 
 
@@ -261,20 +305,14 @@ export default function Relldata() {
   ])
   const [data, setData] = useState<Item[]>([])
 
-useEffect(() => {
-  async function fetchItems() {
-    try {
-      const res = await fetch('/api/items')
-      if (!res.ok) throw new Error('Failed to fetch from API')
+  useEffect(() => {
+    async function fetchPosts() {
+      const res = await fetch('/data/csvjson.json')
       const json = await res.json()
       setData(json)
-    } catch (err) {
-      console.error('Error fetching from API.')
-      // ممكن تعرض رسالة للمستخدم أو تسيب البيانات فاضية
     }
-  }
-  fetchItems()
-}, [])
+    fetchPosts()
+  }, [])
 
 
 
